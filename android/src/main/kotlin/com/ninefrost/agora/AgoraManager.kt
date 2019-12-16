@@ -2,9 +2,11 @@ package com.ninefrost.agora
 
 import android.content.Context
 import android.util.Log
+import io.agora.rtc.Constants
 
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
+
 //import io.agora.rtc.Constants
 
 class AgoraManager private constructor() {
@@ -33,7 +35,8 @@ class AgoraManager private constructor() {
 //        mRtcEngine!!.enableVideo()
 //        mRtcEngine!!.setVideoProfile(options.getInt("videoProfile"), options.getBoolean("swapWidthAndHeight")) //视频配置，
 //        mRtcEngine!!.enableWebSdkInteroperability(true)  //设置和web通信
-          mRtcEngine!!.setChannelProfile(options.getValue("channelProfile") as Int) //设置模式
+        mRtcEngine!!.setChannelProfile(options.getValue("channelProfile") as Int) //设置模式
+        mRtcEngine!!.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO, Constants.AUDIO_SCENARIO_CHATROOM_ENTERTAINMENT);
 //        mRtcEngine!!.setClientRole(options.getInt("clientRole"), null) //设置角色
     }
 

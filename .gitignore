@@ -1,0 +1,11 @@
+pubspec.lock
+.DS_Store
+android/.idea
+.idea/libraries/Dart_SDK.xml
+.idea/libraries/Flutter_Plugins.xml
+.flutter-plugins-dependencies
+.idea
+.dart_tool
+.packages
+flutter_export_environment.sh
+ios/Libs

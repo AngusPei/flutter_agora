@@ -42,4 +42,5 @@ object Constant {
     val ON_CONNECTION_LOST = "onConnectionLost"
     val ON_NETWORK_QUALITY = "onNetworkQuality"
     val ON_LASTMILE_QUALITY = "onLastmileQuality"
+    val ON_AUDIO_FINISH = "onAudioFinish"
 }

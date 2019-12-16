@@ -86,7 +86,7 @@ class Agora {
       _responseFromUserMuteAudioController.stream;
 
   static StreamController<Map> _responseFromConnectionLostController =
-      new StreamController.broadcast();
+  new StreamController.broadcast();
 
   static Stream<Map> get responseFromConnectionLost =>
       _responseFromConnectionLostController.stream;
@@ -103,6 +103,11 @@ class Agora {
   static Stream<Map> get responseFromLastmileQuality =>
       _responseFromLastmileQualityController.stream;
 
+  static StreamController<Map> _responseFromAudioFinishController =
+  new StreamController.broadcast();
+
+  static Stream<Map> get responseFromAudioFinish =>
+      _responseFromAudioFinishController.stream;
   /**
    * 回调时调用的对应函数
    */
@@ -130,7 +135,9 @@ class Agora {
     } else if ("onNetworkQuality" == methodCall.method) {
       _responseFromNetworkQualityController.add(methodCall.arguments);
     } else if ("onLastmileQuality" == methodCall.method) {
-      _responseFromLastmileQualityController.add(methodCall.arguments);
+      _responseFromAudioFinishController.add(methodCall.arguments);
+    } else if('onAudioFinish' == methodCall.method){
+      _responseFromAudioFinishController.add(methodCall.arguments);
     }
 
     return Future.value(true);

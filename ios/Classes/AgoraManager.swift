@@ -28,6 +28,7 @@ public class AgoraManager: NSObject,AgoraRtcEngineDelegate {
     
     func setChannelProfile(type: Int) {
         agoraKit.setChannelProfile(AgoraChannelProfile(rawValue: type) ?? AgoraChannelProfile.liveBroadcasting)
+        agoraKit.setAudioProfile(AgoraAudioProfile.musicHighQuality, scenario: AgoraAudioScenario.chatRoomEntertainment)
     }
     
     func joinChannel(channelId: String, uid: UInt) -> Int32 {
@@ -122,12 +123,12 @@ public class AgoraManager: NSObject,AgoraRtcEngineDelegate {
     
     public func rtcEngine(_ engine: AgoraRtcEngineKit, didRejoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
         self.agoraKit.setEnableSpeakerphone(true)
-        self.channel.invokeMethod(ON_JOIN_CHANNEL_SUCCESS, arguments: ["channel": channel, "uid": uid])
+        self.channel.invokeMethod(ON_JOIN_CHANNEL_SUCCESS, arguments: ["channel": channel, "uid": uid, "reJoin": true])
     }
     
     public func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
         self.agoraKit.setEnableSpeakerphone(true)
-        self.channel.invokeMethod(ON_JOIN_CHANNEL_SUCCESS, arguments: ["channel": channel, "uid": uid])
+        self.channel.invokeMethod(ON_JOIN_CHANNEL_SUCCESS, arguments: ["channel": channel, "uid": uid, "reJoin": false])
     }
     
     public func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
@@ -164,7 +165,13 @@ public class AgoraManager: NSObject,AgoraRtcEngineDelegate {
     }
     
     public func rtcEngineConnectionDidLost(_ engine: AgoraRtcEngineKit) {
-        channel.invokeMethod(ON_CONNECTION_LOST, arguments: [])
+        channel.invokeMethod(ON_CONNECTION_LOST, arguments: ["success": true])
+    }
+    
+    public func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionStateType, reason: AgoraConnectionChangedReason) {
+        if reason == AgoraConnectionChangedReason.interrupted {
+            channel.invokeMethod(ON_CONNECTION_LOST, arguments: ["success": true])
+        }
     }
     
     public func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileQuality quality: AgoraNetworkQuality) {

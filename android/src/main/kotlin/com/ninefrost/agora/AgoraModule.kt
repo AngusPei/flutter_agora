@@ -40,7 +40,17 @@ object AgoraModule {
 
             val result = mapOf(
                     "channel" to channel,
-                    "uid" to uid
+                    "uid" to uid,
+                    "reJoin" to false
+            )
+            AgoraModule.channel?.invokeMethod(Constant.ON_JOIN_CHANNEL_SUCCESS, result)
+        }
+
+        override fun onRejoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+            val result = mapOf(
+                    "channel" to channel,
+                    "uid" to uid,
+                    "reJoin" to true
             )
             AgoraModule.channel?.invokeMethod(Constant.ON_JOIN_CHANNEL_SUCCESS, result)
         }
@@ -50,7 +60,7 @@ object AgoraModule {
          */
         override fun onUserJoined(uid: Int, elapsed: Int) {
 
-            Log.i("Agora", "有人来了----")
+            Log.d("Agora", "有人来了----")
 
             val result = mapOf(
                     "uid" to uid
@@ -107,7 +117,7 @@ object AgoraModule {
          * 错误信息
          */
         override fun onError(err: Int) {
-            Log.i("Agora", err.toString() + "错误---")
+            Log.d("Agora", err.toString() + "错误---")
             AgoraModule.channel?.invokeMethod(Constant.ON_ERROR, mapOf(
                     "err" to err
             ))
@@ -117,7 +127,7 @@ object AgoraModule {
          * 警告
          */
         override fun onWarning(warn: Int) {
-            Log.i("Agora", warn.toString() + "警告---")
+            Log.d("Agora", warn.toString() + "警告---")
             AgoraModule.channel?.invokeMethod(Constant.ON_WARNING, mapOf(
                     "warn" to warn
             ))
@@ -127,7 +137,13 @@ object AgoraModule {
          * 退出频道
          */
         override fun onLeaveChannel(stats: RtcStats) {
-            AgoraModule.channel?.invokeMethod(Constant.ON_LEAVE_CHANNEL, {})
+            AgoraModule.channel?.invokeMethod(Constant.ON_LEAVE_CHANNEL, mapOf("stats" to true))
+        }
+
+        override fun onConnectionStateChanged(state: Int, reason: Int) {
+            if(reason == 2) {
+                AgoraModule.channel?.invokeMethod(Constant.ON_CONNECTION_LOST, mapOf("lost" to true))
+            }
         }
 
         /**
@@ -141,7 +157,7 @@ object AgoraModule {
         }
 
         override fun onConnectionLost() {
-            AgoraModule.channel?.invokeMethod(Constant.ON_CONNECTION_LOST, {})
+            AgoraModule.channel?.invokeMethod(Constant.ON_CONNECTION_LOST, mapOf("lost" to true))
         }
 
         override fun onNetworkQuality(uid: Int, txQuality: Int, rxQuality: Int) {
@@ -157,6 +173,11 @@ object AgoraModule {
             AgoraModule.channel?.invokeMethod(Constant.ON_LASTMILE_QUALITY, mapOf(
                     "quality" to quality
             ))
+        }
+
+        override fun onAudioMixingFinished() {
+            Log.d("Agora", "audo fininsh---")
+            AgoraModule.channel?.invokeMethod(Constant.ON_AUDIO_FINISH, mapOf("finish" to true))
         }
     }
 
