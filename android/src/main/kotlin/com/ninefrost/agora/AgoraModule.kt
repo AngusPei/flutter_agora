@@ -4,7 +4,7 @@ import com.ninefrost.agora.Constant
 import android.util.Log
 
 import io.agora.rtc.IRtcEngineEventHandler
-import io.agora.rtc.PublisherConfiguration
+//import io.agora.rtc.PublisherConfiguration
 import io.agora.rtc.RtcEngine
 
 import io.flutter.plugin.common.MethodChannel
@@ -141,7 +141,7 @@ object AgoraModule {
         }
 
         override fun onConnectionStateChanged(state: Int, reason: Int) {
-            if(reason == 2) {
+            if (reason == 2) {
                 AgoraModule.channel?.invokeMethod(Constant.ON_CONNECTION_LOST, mapOf("lost" to true))
             }
         }
@@ -229,7 +229,8 @@ object AgoraModule {
     fun enableAudioVolumeIndication(call: MethodCall) {
         AgoraManager.instance.mRtcEngine!!.enableAudioVolumeIndication(
                 call.argument<Int>("interval") as Int,
-                call.argument<Int>("smooth") as Int
+                call.argument<Int>("smooth") as Int,
+                true
         )
     }
 
