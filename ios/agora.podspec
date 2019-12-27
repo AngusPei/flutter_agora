@@ -23,6 +23,6 @@ agora plugin.
   s.preserve_paths = "Libs/*.framework"
   s.vendored_libraries = "**/*.a"
   s.vendored_frameworks="**/*.framework"
-  s.ios.deployment_target = "9.3"
+  s.ios.deployment_target = "8.0"
 end
 

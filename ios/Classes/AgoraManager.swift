@@ -56,7 +56,7 @@ public class AgoraManager: NSObject,AgoraRtcEngineDelegate {
     }
     
     public func enableAudioVolumeIndication(interval: Int, smooth: Int) -> Int32 {
-        return agoraKit.enableAudioVolumeIndication(interval, smooth: smooth)
+        return agoraKit.enableAudioVolumeIndication(interval, smooth: smooth, report_vad: false)
     }
     
     public func enableAudio() -> Int32{
